@@ -1,0 +1,34 @@
+A simple MVP frame work. 
+
+create a view:
+var view = Object.create(prezly.View);
+view.signature = ['meth1', 'meth2'];
+var widget = view.implement();
+
+create a prezenter:
+var prezenter = Object.create(prezly.Prezenter);
+prezenter.initialize = function (view) {};
+prezenter.prezent(view)
+
+create a model:
+var model = Object.create(prezly.Model);
+model.set('attr1', 'value');
+
+all together now:
+var prezenter = Object.create(prezly.Prezenter);
+prezenter.initialize = function (view) {
+  var model = Object.create(prezly.Model);
+  model.on('change', function (attr, value, old_value) {
+    view.meth1(value);
+  });
+};
+var view = Object.create(prezly.View);
+view.signature = ['meth1', 'meth2'];
+var widget = view.implement({
+  meth1: function (value) {
+    alert(value);
+  }
+);
+prezenter.prezent(widget);
+
+
