@@ -31,9 +31,33 @@ prezly.EventEmitter = {
     emit: function (event) {
 	var events = this._events || (this._events = {});
 	var handlers = events[event] || (events[event] = []);
+	var args = Array.prototype.slice.call(arguments, 1);
 	handlers.forEach(function (handler) {
-	    handler();
-	});
+	    handler.apply(this, args);
+	}, this);
     }
 
 };
+
+
+prezly.Model = {
+
+    attributes: function () {
+	return this._attributes && Object.keys(this._attributes);
+    },
+
+    get: function (attr) {
+	var attributes = this._attributes || (this._attributes = {});
+	return attributes[attr]
+    },
+
+    set: function (attr, value) {
+	var attributes = this._attributes || (this._attributes = {});
+	var old = attributes[attr];
+	attributes[attr] = value;
+	this.emit('change', attr, value, old);
+    }
+
+};
+
+prezly.extend(prezly.Model, prezly.EventEmitter);

@@ -37,4 +37,16 @@ describe('EventEmitter', function () {
 	expect(handler_2).toHaveBeenCalled();
     });
 
+    it('passes the arguments on to the handler', function () {
+	event_emitter.on('event_1', handler_1);
+	event_emitter.emit('event_1', 1, 2, 3);
+	expect(handler_1).toHaveBeenCalledWith(1, 2, 3);
+    });
+
+    it('runs the handler in the context of itself', function () {
+	event_emitter.on('event_1', handler_1);
+	event_emitter.emit('event_1');
+	expect(handler_1.mostRecentCall.object).toBe(event_emitter);
+    });
+
 });
