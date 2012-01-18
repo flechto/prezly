@@ -57,6 +57,19 @@ prezly.sub = function (proto) {
     return sub;
 };
 
+prezly.Subable = {
+
+    sub: function () {
+	var args = Array.prototype.slice.call(arguments, 0);
+	args.unshift(this);
+	if (this.__preserve_on_sub) {
+	    args.unshift(this.__preserve_on_sub.join(' '));
+	}
+	return prezly.sub.apply(prezly, args);
+    }
+
+};
+
 prezly.noop = function () {};
 
 prezly.EventEmitter = {
