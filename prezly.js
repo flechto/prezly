@@ -23,9 +23,22 @@ prezly.extend = function (dest, src) {
 };
 
 prezly.sub = function (proto) {
-    var sub = Object.create(proto);
+    var preserve;
+    var sub;
     var args = Array.prototype.slice.call(arguments, 1);
+    if (typeof proto === 'string') {
+	preserve = proto;
+	proto = args.shift();
+    }
+    else if (proto === true) {
+	proto = args.shift();
+	preserve = Object.keys(proto).join(' ');
+    }
+    sub = Object.create(proto);
     args.unshift(sub);
+    if (preserve) {
+	args.unshift(preserve);
+    }
     prezly.extend.apply(prezly, args);
     return sub;
 };
