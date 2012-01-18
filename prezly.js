@@ -78,8 +78,11 @@ prezly.View = {
 
 prezly.Prezenter = {
 
-    prezent: function (view) {
+    initialize: function () {
+    },
 
+    prezent: function (view) {
+	this.initialize(view);
     }
 
 };
