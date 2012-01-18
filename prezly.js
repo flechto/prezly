@@ -74,3 +74,12 @@ prezly.View = {
     }
 
 };
+
+
+prezly.Prezenter = {
+
+    prezent: function (view) {
+
+    }
+
+};
