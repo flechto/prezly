@@ -22,6 +22,20 @@ prezly.extend = function (dest, src) {
     return dest;
 };
 
+prezly.Extendable = {
+
+    extend: function () {
+	var args = Array.prototype.slice.call(arguments, 0);
+	args.unshift(this);
+	if (this.__preserve_on_extend) {
+	    args.unshift(this.__preserve_on_extend.join(' '));
+	}
+	return prezly.extend.apply(prezly, args);
+    }
+
+};
+
+
 prezly.sub = function (proto) {
     var preserve;
     var sub;
