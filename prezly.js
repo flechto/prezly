@@ -2,10 +2,21 @@
 prezly = exports;
 
 prezly.extend = function (dest, src) {
+    var preserve;
     var args = Array.prototype.slice.call(arguments, 1);
+    if (typeof dest === 'string') {
+	preserve = dest.split(' ');
+	dest = args.shift();
+    }
+    else if (dest === true) {
+	dest = args.shift();
+	preserve = Object.keys(dest);
+    }
     args.forEach(function (arg) {
 	Object.keys(arg).forEach(function (key) {
-	    dest[key] = arg[key]
+	    if (preserve === undefined || preserve.indexOf(key) === -1) {
+		dest[key] = arg[key]
+	    }
 	});
     });
     return dest;

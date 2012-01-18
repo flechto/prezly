@@ -28,6 +28,40 @@ describe('prezly.extend', function () {
 	expect(obj1.prop3).toBeDefined();
     });
 
+    it('preservers the properties in the first argument if it is a string', function () {
+	var obj1 = {
+	    prop1: 'prop1',
+	    prop2: 'prop2',
+	    prop3: 'prop3'
+	};
+	var extended = prezly.extend('prop1 prop2', obj1, {
+	    prop1: 'prop1_extended',
+	    prop2: 'prop2_extended',
+	    prop3: 'prop3_extended'
+	})
+	expect(extended).toBe(obj1);
+	expect(extended.prop1).toEqual('prop1');
+	expect(extended.prop2).toEqual('prop2');
+	expect(extended.prop3).toEqual('prop3_extended');
+    });
+
+    it('preservers all the properties if the first argument true', function () {
+	var obj1 = {
+	    prop1: 'prop1',
+	    prop2: 'prop2',
+	    prop3: 'prop3'
+	};
+	var extended = prezly.extend(true, obj1, {
+	    prop1: 'prop1_extended',
+	    prop2: 'prop2_extended',
+	    prop3: 'prop3_extended'
+	})
+	expect(extended).toBe(obj1);
+	expect(extended.prop1).toEqual('prop1');
+	expect(extended.prop2).toEqual('prop2');
+	expect(extended.prop3).toEqual('prop3');
+    });
+
 });
 
 
