@@ -90,7 +90,7 @@ var Creatable = prezly.Creatable = {
 
 prezly.noop = function () {};
 
-prezly.EventEmitter = {
+var EventEmitter = prezly.EventEmitter = {
 
     on: function (event, handler) {
 	var events = this._events || (this._events = {});
@@ -110,10 +110,19 @@ prezly.EventEmitter = {
 };
 
 
-prezly.Model = {
+var Model = prezly.Model = {
+
+    initialize: function (attributes) {
+	if (attributes) {
+	    Object.keys(attributes).forEach(function (attr) {
+		this.set(attr, attributes[attr]);
+	    }, this);
+	}
+    },
 
     attributes: function () {
-	return this._attributes && Object.keys(this._attributes);
+	var attributes = this._attributes || (this._attributes = {});
+	return Object.keys(attributes);
     },
 
     get: function (attr) {
@@ -130,7 +139,9 @@ prezly.Model = {
 
 };
 
-prezly.extend(prezly.Model, prezly.EventEmitter);
+prezly.extend(Model, 
+	      EventEmitter,
+	      Creatable);
 
 var View = prezly.View = {
 
