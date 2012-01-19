@@ -74,8 +74,10 @@ prezly.Creatable = {
 
     create: function (options) {
 	var obj = Object.create(this);
+	var args = Array.prototype.slice.call(arguments, 0);
+	options = args[args.length - 1];
 	obj.options = options;
-	obj.initialize && obj.initialize();
+	obj.initialize && obj.initialize.apply(obj, args);
 	return obj;
     }
 
