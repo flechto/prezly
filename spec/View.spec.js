@@ -33,4 +33,9 @@ describe('View', function () {
 	expect(widget.method_2).toBe(prezly.noop);
     });
 
+    it('creates the signature from all arguments', function () {
+	var view = prezly.View.create('s', 'ss', 'sss');
+	expect(view.signature).toEqual(['s', 'ss', 'sss']);
+    });
+
 });

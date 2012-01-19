@@ -74,7 +74,7 @@ prezly.Subable = {
 
 };
 
-prezly.Creatable = {
+var Creatable = prezly.Creatable = {
 
     create: function (options) {
 	var obj = Object.create(this);
@@ -132,7 +132,11 @@ prezly.Model = {
 
 prezly.extend(prezly.Model, prezly.EventEmitter);
 
-prezly.View = {
+var View = prezly.View = {
+
+    initialize: function () {
+	this.signature = prezly.makeArray(arguments);
+    },
 
     implement: function (impl) {
 	impl = impl || {};
@@ -144,6 +148,7 @@ prezly.View = {
 
 };
 
+prezly.extend(View, Creatable);
 
 prezly.Prezenter = {
 
