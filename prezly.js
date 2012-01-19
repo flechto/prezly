@@ -70,6 +70,18 @@ prezly.Subable = {
 
 };
 
+prezly.Creatable = {
+
+    create: function (options) {
+	var obj = Object.create(this);
+	obj.options = options;
+	obj.initialize && obj.initialize();
+	return obj;
+    }
+
+};
+
+
 prezly.noop = function () {};
 
 prezly.EventEmitter = {
