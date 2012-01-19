@@ -117,3 +117,14 @@ describe('prezly.sub', function () {
     });
 
 });
+
+describe('makeArray', function () {
+
+    it('converts arguments object to a true array', function () {
+	var a = (function () {
+	    return prezly.makeArray(arguments);
+	})(1, 2, 3);
+	expect(a).toEqual([1, 2, 3]);
+    });
+
+});

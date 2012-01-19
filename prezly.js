@@ -1,6 +1,10 @@
 
 prezly = exports;
 
+prezly.makeArray = function (obj) {
+    return Array.prototype.slice.call(obj, 0);
+};
+
 prezly.extend = function (dest, src) {
     var preserve;
     var args = Array.prototype.slice.call(arguments, 1);
