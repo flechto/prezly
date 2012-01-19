@@ -134,6 +134,9 @@ prezly.Prezenter = {
 
     prezent: function (view) {
 	this.initialize(view);
-    }
+    },
 
+    __preserve_on_sub: ['prezent']
 };
+
+prezly.extend(prezly.Prezenter, prezly.Subable);
