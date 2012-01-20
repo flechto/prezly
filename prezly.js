@@ -61,7 +61,7 @@ prezly.sub = function (proto) {
     return sub;
 };
 
-prezly.Subable = {
+var Subable = prezly.Subable = {
 
     sub: function () {
 	var args = Array.prototype.slice.call(arguments, 0);
@@ -154,12 +154,13 @@ var View = prezly.View = {
 	return this.signature && this.signature.reduce(function (widget, method) {
 	    widget[method] = (typeof impl[method] === 'function') ? impl[method] : prezly.noop;
 	    return widget;
-	}, {});
+	}, Object.create(Widget));
     }
 
 };
 
 prezly.extend(View, Creatable);
+
 
 prezly.Prezenter = {
 
@@ -174,3 +175,16 @@ prezly.Prezenter = {
 };
 
 prezly.extend(prezly.Prezenter, prezly.Subable);
+
+
+var Widget = prezly.Widget = {
+
+    initialize: function () {
+    }
+
+};
+
+prezly.extend(Widget,
+	      Creatable,
+	      Subable,
+	      EventEmitter);

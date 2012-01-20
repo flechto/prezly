@@ -26,6 +26,12 @@ describe('View', function () {
 	expect(widget.method_1).toBe(prezly.noop);
     });
 
+    it('implements a Widget', function () {
+	var widget = view.implement();
+	for (var p in prezly.Widget) 
+	    expect(widget[p]).toBe(prezly.Widget[p]);
+    });
+
     it('only implements methods', function () {
 	var widget = view.implement({
 	    method_2: 42
