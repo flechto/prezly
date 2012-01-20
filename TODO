@@ -1,0 +1,11 @@
+collections
+attribute accessors for model
+browser compatable
+demo
+readonly attributes on model
+event bubbling|dispatching|piping
+      - pipe to super class
+      - bubble up to parent object
+      - dispatch from super class
+
+
