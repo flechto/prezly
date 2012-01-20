@@ -143,6 +143,93 @@ prezly.extend(Model,
 	      EventEmitter,
 	      Creatable);
 
+
+var Collection = prezly.Collection = {
+
+    append: function (item) {
+	if (arguments.length > 1) {
+	    prezly.makeArray(arguments).forEach(function (i) {
+		this.append(i);
+	    }, this);
+	    return;
+	}
+	this.insert(item, this.count());
+    },
+
+    count: function () {
+	return this._items.length;
+    },
+
+    empty: function () {
+	return this.count() === 0;
+    },
+
+    first: function () {
+	return this.get(0);
+    },
+
+    get: function (index) {
+	if (typeof index === 'number') {
+	    return this._items[index];
+	}
+	return this._items;
+    },
+
+    initialize: function () {
+	this._items = [];
+	prezly.makeArray(arguments).forEach(function (item) {
+	    this._items.push(item);
+	}, this);
+    },
+
+    insert: function (item, index) {
+	if (index === this.count()) {
+	    this._items.push(item);
+	}
+	else {
+	    this._items = this._items.reduce(function (items, next_item, i) {
+		if (i === index) {
+		    items.push(item);
+		}
+		items.push(next_item);
+		return items;
+	    }, []);	
+	}
+	this.emit('add', item, index);
+    },
+
+    last: function () {
+	return this._items[this.count() - 1];
+    },
+
+    removeAt: function (index) {
+	var removed;
+	this._items = this._items.reduce(function (items, next_item, i) {
+	    if (i !== index) {
+		items.push(next_item);
+	    }
+	    else {
+		removed = next_item;
+	    }
+	    return items;
+	}, []);
+	if (removed) {
+	    this.emit('remove', removed, index);
+	}
+    },
+
+    removeItem: function (item) {
+	this.removeAt(this.get().indexOf(item));
+    }
+
+};
+
+prezly.extend(Collection,
+	      Creatable,
+	      EventEmitter);
+
+
+
 var View = prezly.View = {
 
     initialize: function () {
