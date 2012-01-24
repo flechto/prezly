@@ -141,7 +141,8 @@ var Model = prezly.Model = {
 
 prezly.extend(Model, 
 	      EventEmitter,
-	      Creatable);
+	      Creatable, 
+	      Subable);
 
 
 var Collection = prezly.Collection = {
