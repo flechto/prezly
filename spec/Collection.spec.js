@@ -100,6 +100,12 @@ describe('Collection', function () {
     });
 
     it('supports forEach functionality', function () {
+	var callback = jasmine.createSpy('forEach_callback');
+	collection.append(1, 2, 3).forEach(callback);
+	expect(callback.callCount).toBe(3);
+	expect(callback.argsForCall[0]).toEqual([1, 0, collection.get()]);
+	expect(callback.argsForCall[1]).toEqual([2, 1, collection.get()]);
+	expect(callback.argsForCall[2]).toEqual([3, 2, collection.get()]);
     });
 
     it('supports map functionality', function () {
@@ -109,6 +115,29 @@ describe('Collection', function () {
     });
 
     it('supports filter', function () {
+	var callback = jasmine.createSpy('filter_callback').and
+	var filtered = collection.append(1, 'two', 3).filter(function (item) {
+	    return typeof item === 'string';
+	});
+	expect(filtered).not.toBe(collection);
+	expect(filtered.get()).toEqual(['two']);
+    });
+
+    it('can have an object set to its type and all its methods will run on the whole collection', function () {
+	var method = jasmine.createSpy('method');
+	var Type = prezly.extend({
+	    method: method
+	}, prezly.Creatable);
+	var TypedCollection = prezly.Collection.sub().type(Type);
+	var o1 = Type.create();
+	var o2 = Type.create();
+	var o3 = Type.create();
+	var collection = TypedCollection.create(o1, o2, o3);
+	collection.method(4);
+	expect(method.callCount).toBe(3);
+	expect(method.calls[0].object).toBe(o1);
+	expect(method.calls[1].object).toBe(o2);
+	expect(method.calls[2].object).toBe(o3);
     });
 
 });

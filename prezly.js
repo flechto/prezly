@@ -151,9 +151,11 @@ var Collection = prezly.Collection = {
 	    prezly.makeArray(arguments).forEach(function (i) {
 		this.append(i);
 	    }, this);
-	    return;
 	}
-	this.insert(item, this.count());
+	else {
+	    this.insert(item, this.count());
+	}
+	return this;
     },
 
     count: function () {
@@ -164,8 +166,16 @@ var Collection = prezly.Collection = {
 	return this.count() === 0;
     },
 
+    filter: function (callback) {
+	return this.fromArray(this.get().filter(callback, this));
+    },
+
     first: function () {
 	return this.get(0);
+    },
+
+    forEach: function (callback) {
+	this.get().forEach(callback, this);
     },
 
     fromArray: function (a) {
@@ -204,6 +214,7 @@ var Collection = prezly.Collection = {
 	    }, []);	
 	}
 	this.emit('add', item, index);
+	return this;
     },
 
     last: function () {
@@ -228,13 +239,30 @@ var Collection = prezly.Collection = {
 
     removeItem: function (item) {
 	this.removeAt(this.get().indexOf(item));
+    },
+
+    type: function (type) {
+	for (var p in type) {
+	    // V8 doesn't support let?
+	    (function (prop, o) {
+		if (prop === 'create') return;
+		o[prop] = function () {
+		    var args = prezly.makeArray(arguments);
+		    this.forEach(function (item) {
+			item[prop].apply(item, args);
+		    });
+		};
+	    })(p, this);
+	}
+	return this;
     }
 
 };
 
 prezly.extend(Collection,
 	      Creatable,
-	      EventEmitter);
+	      EventEmitter,
+	      Subable);
 
 
 
