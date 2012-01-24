@@ -168,6 +168,14 @@ var Collection = prezly.Collection = {
 	return this.get(0);
     },
 
+    fromArray: function (a) {
+	var collection = this.create();
+	a.forEach(function (o) {
+	    this.append(o);
+	}, collection);
+	return collection;
+    },
+
     get: function (index) {
 	if (typeof index === 'number') {
 	    return this._items[index];

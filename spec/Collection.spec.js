@@ -15,6 +15,12 @@ describe('Collection', function () {
 	expect(collection.empty()).toBe(true);
     });
 
+    it('can be created from an array', function () {
+	var collection_from_array = collection.fromArray([1, 2, 3]);
+	expect(collection_from_array).not.toBe(collection);
+	expect(collection_from_array.get()).toEqual([1, 2, 3]);
+    });
+
     it('is not empty when it contains objects', function () {
 	collection.append(1);
 	expect(collection.empty()).toBe(false);
@@ -91,6 +97,18 @@ describe('Collection', function () {
 	handler.reset();
 	collection.removeAt(1);
 	expect(handler).toHaveBeenCalledWith(2, 1);
+    });
+
+    it('supports forEach functionality', function () {
+    });
+
+    it('supports map functionality', function () {
+    });
+
+    it('supports reduce', function () {
+    });
+
+    it('supports filter', function () {
     });
 
 });
