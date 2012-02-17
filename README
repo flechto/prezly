@@ -1,5 +1,7 @@
 A simple MVP frame work. 
 
+# Models
+
 create a view:
 var view = Object.create(prezly.View);
 view.signature = ['meth1', 'meth2'];
