@@ -6,13 +6,8 @@ describe('Collection', function () {
     var handler;
 
     beforeEach(function () {
-	collection = prezly.Collection.create();
+	collection = Object.create(prezly.Collection);
 	handler = jasmine.createSpy('handler');
-    });
-
-    it('is empty when created if no items are passed', function () {
-	collection = prezly.Collection.create();
-	expect(collection.empty()).toBe(true);
     });
 
     it('can be created from an array', function () {
@@ -24,12 +19,6 @@ describe('Collection', function () {
     it('is not empty when it contains objects', function () {
 	collection.append(1);
 	expect(collection.empty()).toBe(false);
-    });
-
-    it('contains all items passed in when created', function () {
-	collection = prezly.Collection.create(1, 2, 3);
-	expect(collection.count()).toBe(3);
-	expect(collection.get()).toEqual([1, 2, 3])
     });
 
     it('can append an item to the end', function () {
@@ -80,7 +69,8 @@ describe('Collection', function () {
     it('emits an event when an item is added', function () {
 	var obj1 = {obj: 1};
 	var obj2 = {obj: 2};
-	collection = prezly.Collection.create(1, 2, 3);
+	collection = Object.create(prezly.Collection)
+	collection.append(1, 2, 3);
 	collection.on('add', handler);
 	collection.insert(obj1, 1);
 	expect(handler).toHaveBeenCalledWith(obj1, 1)
@@ -115,9 +105,8 @@ describe('Collection', function () {
     });
 
     it('supports filter', function () {
-	var callback = jasmine.createSpy('filter_callback').and
 	var filtered = collection.append(1, 'two', 3).filter(function (item) {
-	    return typeof item === 'string';
+	    return isNaN(item);
 	});
 	expect(filtered).not.toBe(collection);
 	expect(filtered.get()).toEqual(['two']);
@@ -125,14 +114,15 @@ describe('Collection', function () {
 
     it('can have an object set to its type and all its methods will run on the whole collection', function () {
 	var method = jasmine.createSpy('method');
-	var Type = prezly.extend({
+	var Type = {
 	    method: method
-	}, prezly.Creatable);
+	};
 	var TypedCollection = prezly.Collection.sub().type(Type);
-	var o1 = Type.create();
-	var o2 = Type.create();
-	var o3 = Type.create();
-	var collection = TypedCollection.create(o1, o2, o3);
+	var o1 = Object.create(Type);
+	var o2 = Object.create(Type);
+	var o3 = Object.create(Type);
+	var collection = Object.create(TypedCollection)
+	collection.append(o1, o2, o3);
 	collection.method(4);
 	expect(method.callCount).toBe(3);
 	expect(method.calls[0].object).toBe(o1);

@@ -74,6 +74,7 @@ var Subable = prezly.Subable = {
 
 };
 
+/*
 var Creatable = prezly.Creatable = {
 
     create: function (options) {
@@ -87,6 +88,7 @@ var Creatable = prezly.Creatable = {
 
 };
 
+*/
 
 prezly.noop = function () {};
 
@@ -141,7 +143,6 @@ var Model = prezly.Model = {
 
 prezly.extend(Model, 
 	      EventEmitter,
-	      Creatable, 
 	      Subable);
 
 
@@ -160,6 +161,7 @@ var Collection = prezly.Collection = {
     },
 
     count: function () {
+	var items = this._items || (this._items = []);
 	return this._items.length;
     },
 
@@ -180,7 +182,7 @@ var Collection = prezly.Collection = {
     },
 
     fromArray: function (a) {
-	var collection = this.create();
+	var collection = Object.create(Collection);
 	a.forEach(function (o) {
 	    this.append(o);
 	}, collection);
@@ -261,7 +263,6 @@ var Collection = prezly.Collection = {
 };
 
 prezly.extend(Collection,
-	      Creatable,
 	      EventEmitter,
 	      Subable);
 
@@ -282,9 +283,6 @@ var View = prezly.View = {
     }
 
 };
-
-prezly.extend(View, Creatable);
-
 
 prezly.Prezenter = {
 
@@ -309,6 +307,5 @@ var Widget = prezly.Widget = {
 };
 
 prezly.extend(Widget,
-	      Creatable,
 	      Subable,
 	      EventEmitter);

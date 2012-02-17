@@ -6,7 +6,7 @@ describe('Model', function () {
     var change_handler;
 
     beforeEach(function () {
-	model = prezly.Model.create();
+	model = Object.create(prezly.Model);
 	change_handler = jasmine.createSpy('change_handler');
     });
 
@@ -17,16 +17,6 @@ describe('Model', function () {
 	expect(model.attributes()).toContain('attr_2');
 	expect(model.get('attr_1')).toBe(true);
 	expect(model.get('attr_2')).toBe(false);
-    });
-
-    it('sets all attributes provide on creation', function () {
-	var model = prezly.Model.create({
-	    attr1: 'attr1',
-	    attr2: 2
-	});
-	expect(model.attributes()).toContain('attr1', 'attr2');
-	expect(model.get('attr1')).toEqual('attr1');
-	expect(model.get('attr2')).toEqual(2);
     });
 
     it('can get a list of all attributes', function () {
