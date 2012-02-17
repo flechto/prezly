@@ -1,5 +1,23 @@
 var prezly = require('../prezly');
 
+describe('prezly.model', function () {
+    
+    it('creates a model with the provided attributes', function () {
+	var model = prezly.model('att1 att2');
+	expect(model.att1).toBeDefined();
+	expect(typeof model.att1).toBe('function');
+	expect(model.att2).toBeDefined();
+	expect(typeof model.att2).toBe('function');
+	spyOn(model, 'get');
+	spyOn(model, 'set');
+	model.att1();
+	expect(model.get).toHaveBeenCalledWith('att1');
+	model.att2('val');
+	expect(model.set).toHaveBeenCalledWith('att2', 'val');
+    });
+
+});
+
 describe('Model', function () {
 
     var model;

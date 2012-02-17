@@ -1,7 +1,7 @@
 
 prezly = exports;
 
-prezly.makeArray = function (obj) {
+var make_array = prezly.makeArray = function (obj) {
     return Array.prototype.slice.call(obj, 0);
 };
 
@@ -114,14 +114,6 @@ var EventEmitter = prezly.EventEmitter = {
 
 var Model = prezly.Model = {
 
-    initialize: function (attributes) {
-	if (attributes) {
-	    Object.keys(attributes).forEach(function (attr) {
-		this.set(attr, attributes[attr]);
-	    }, this);
-	}
-    },
-
     attributes: function () {
 	var attributes = this._attributes || (this._attributes = {});
 	return Object.keys(attributes);
@@ -142,9 +134,20 @@ var Model = prezly.Model = {
 };
 
 prezly.extend(Model, 
-	      EventEmitter,
-	      Subable);
+	      EventEmitter);
 
+prezly.model = function (attributes) {
+    var model = Object.create(Model);
+    attributes.split(' ').forEach(function (attribute) {
+	model[attribute] = function (val) {
+	    if (typeof val === 'undefined') {
+		return this.get(attribute);
+	    }
+	    return this.set(attribute, val);
+	};
+    });
+    return model;
+};
 
 var Collection = prezly.Collection = {
 
