@@ -129,4 +129,25 @@ describe('Collection', function () {
 	expect(filtered.get()).toEqual(['two']);
     });
 
+    it('can invoke a method of all items in an array', function () {
+	var o1 = { method: jasmine.createSpy('o1.method') };
+	var o2 = { method: jasmine.createSpy('o2.method') };
+	var collection = prezly.collection(o1, o2);
+	collection.invoke('method', 1, true);
+	expect(o1.method).toHaveBeenCalledWith(1, true);
+	expect(o1.method.mostRecentCall.object).toBe(o1);
+	expect(o2.method).toHaveBeenCalledWith(1, true);
+	expect(o2.method.mostRecentCall.object).toBe(o2);
+    });
+
+    it('ignores an object without the invoked method', function () {
+ 	var o1 = { invoked: jasmine.createSpy('o1.invoked') };
+	var o2 = { method: jasmine.createSpy('o2.method') };
+	var collection = prezly.collection(o1, o2);
+	collection.invoke('invoked', 1, true);
+	expect(o1.invoked).toHaveBeenCalledWith(1, true);
+	expect(o1.invoked.mostRecentCall.object).toBe(o1);
+	expect(o2.method).not.toHaveBeenCalled()
+   });
+
 });

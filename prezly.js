@@ -215,6 +215,16 @@ var Collection = prezly.Collection = {
 	return this;
     },
 
+    invoke: function (method) {
+	var args = make_array(arguments).slice(1);
+	this.forEach(function (item) {
+	    var fn = item[method];
+	    if (typeof fn === 'function') {
+		fn.apply(item, args);
+	    }
+	});
+    },
+
     last: function () {
 	return this._items[this.count() - 1];
     },
