@@ -128,3 +128,18 @@ describe('makeArray', function () {
     });
 
 });
+
+describe('curry', function () {
+    it('returns a function that will call the provide function with the provied arguments and '+
+       'any additional arguments passed to the curried function', function () {
+	   var original = jasmine.createSpy('original');
+	   var curried = prezly.curry(original, 'arg1');
+	   curried('arg2', 'arg3');
+	   expect(original).toHaveBeenCalledWith('arg1', 'arg2', 'arg3');
+       });
+    it('returns the results of the original function when called', function () {
+	var add = function (x, y) { return x + y; };
+	var add5 = prezly.curry(add, 5);
+	expect(add5(2)).toBe(7);
+    });
+});

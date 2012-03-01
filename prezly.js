@@ -5,6 +5,13 @@ var make_array = prezly.makeArray = function (obj) {
     return Array.prototype.slice.call(obj, 0);
 };
 
+var curry = prezly.curry = function (fn) {
+    var args = make_array(arguments).slice(1);
+    return function () {
+	return fn.apply(this, args.concat(make_array(arguments)));
+    }
+};
+
 prezly.extend = function (dest, src) {
     var preserve;
     var args = Array.prototype.slice.call(arguments, 1);
