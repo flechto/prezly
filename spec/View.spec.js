@@ -1,42 +1,16 @@
 var prezly = require('../prezly');
 
-describe('View', function () {
-
-    var view;
-    var method_2;
-
-    beforeEach(function () {
-	view = Object.create(prezly.View);
-	view.signature = ['method_1', 'method_2'];
-	method_2 = jasmine.createSpy('method_2');
+describe('prezly.view', function () {
+    it('creates an object with the provided methods', function () {
+	var view = prezly.view('method1 method2');
+	expect(view.method1).toBe(prezly.noop);
+	expect(view.method2).toBe(prezly.noop);
     });
-
-    it('implements noop methods for all keys in its signature if no implementation is provied', function () {
-	var widget = view.implement();
-	expect(Object.keys(widget)).toContain('method_1', 'method_2');
-	expect(widget.method_1).toBe(prezly.noop);
-	expect(widget.method_2).toBe(prezly.noop);
-    });
-
-    it('implements provided methods if implementation is provided', function () {
-	var widget = view.implement({
-	    method_2: method_2
+    it('creates an object that extends EventEmitter', function () {
+	var view = prezly.view('method1 method2');
+	Object.keys(prezly.EventEmitter).forEach(function (key) {
+	    expect(view[key]).toBe(prezly.EventEmitter[key]);
 	});
-	expect(widget.method_2).toBe(method_2);
-	expect(widget.method_1).toBe(prezly.noop);
     });
-
-    it('implements a Widget', function () {
-	var widget = view.implement();
-	for (var p in prezly.Widget) 
-	    expect(widget[p]).toBe(prezly.Widget[p]);
-    });
-
-    it('only implements methods', function () {
-	var widget = view.implement({
-	    method_2: 42
-	});
-	expect(widget.method_2).toBe(prezly.noop);
-    });
-
 });
+

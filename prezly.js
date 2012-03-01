@@ -267,20 +267,13 @@ prezly.collection.fromArray = function (a) {
     return prezly.collection.apply(this, a);
 };
 
-var View = prezly.View = {
 
-    initialize: function () {
-	this.signature = prezly.makeArray(arguments);
-    },
-
-    implement: function (impl) {
-	impl = impl || {};
-	return this.signature && this.signature.reduce(function (widget, method) {
-	    widget[method] = (typeof impl[method] === 'function') ? impl[method] : prezly.noop;
-	    return widget;
-	}, Object.create(Widget));
-    }
-
+prezly.view = function (methods) {
+    var view = Object.create(EventEmitter);
+    methods.split(' ').forEach(function (method) {
+	view[method] = prezly.noop;
+    });
+    return view;
 };
 
 prezly.Prezenter = {
