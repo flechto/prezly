@@ -1,5 +1,28 @@
 var prezly = require('../prezly');
 
+describe('collection', function () {
+
+    it('creates an empty collection with no arguments', function () {
+	var collection = prezly.collection();
+	expect(collection.empty()).toBe(true);
+    });
+
+    it('creates a collection containing all the arguments', function () {
+	var collection = prezly.collection(1, 'two');
+	expect(collection.get()).toEqual([1, 'two']);
+    });
+
+});
+
+describe('collection.fromArray', function () {
+    
+    it('creates a collection from an array', function () {
+	var collection = prezly.collection.fromArray([1, 'two']);
+	expect(collection.get()).toEqual([1, 'two']);
+    });
+
+});
+
 describe('Collection', function () {
 
     var collection;

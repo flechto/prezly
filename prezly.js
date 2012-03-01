@@ -269,7 +269,17 @@ prezly.extend(Collection,
 	      EventEmitter,
 	      Subable);
 
+prezly.collection = function () {
+    var collection = Object.create(Collection);
+    make_array(arguments).forEach(function (item) {
+	collection.append(item);
+    });
+    return collection;
+};
 
+prezly.collection.fromArray = function (a) {
+    return prezly.collection.apply(this, a);
+};
 
 var View = prezly.View = {
 
