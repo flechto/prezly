@@ -129,22 +129,4 @@ describe('Collection', function () {
 	expect(filtered.get()).toEqual(['two']);
     });
 
-    it('can have an object set to its type and all its methods will run on the whole collection', function () {
-	var method = jasmine.createSpy('method');
-	var Type = {
-	    method: method
-	};
-	var TypedCollection = prezly.Collection.sub().type(Type);
-	var o1 = Object.create(Type);
-	var o2 = Object.create(Type);
-	var o3 = Object.create(Type);
-	var collection = Object.create(TypedCollection)
-	collection.append(o1, o2, o3);
-	collection.method(4);
-	expect(method.callCount).toBe(3);
-	expect(method.calls[0].object).toBe(o1);
-	expect(method.calls[1].object).toBe(o2);
-	expect(method.calls[2].object).toBe(o3);
-    });
-
 });

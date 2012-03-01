@@ -237,22 +237,6 @@ var Collection = prezly.Collection = {
 
     removeItem: function (item) {
 	this.removeAt(this.get().indexOf(item));
-    },
-
-    type: function (type) {
-	for (var p in type) {
-	    // V8 doesn't support let?
-	    (function (prop, o) {
-		if (prop === 'create') return;
-		o[prop] = function () {
-		    var args = prezly.makeArray(arguments);
-		    this.forEach(function (item) {
-			item[prop].apply(item, args);
-		    });
-		};
-	    })(p, this);
-	}
-	return this;
     }
 
 };
