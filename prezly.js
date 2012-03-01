@@ -173,7 +173,7 @@ var Collection = prezly.Collection = {
     },
 
     filter: function (callback) {
-	return this.fromArray(this.get().filter(callback, this));
+	return prezly.collection.fromArray(this.get().filter(callback, this));
     },
 
     first: function () {
@@ -182,14 +182,6 @@ var Collection = prezly.Collection = {
 
     forEach: function (callback) {
 	this.get().forEach(callback, this);
-    },
-
-    fromArray: function (a) {
-	var collection = Object.create(Collection);
-	a.forEach(function (o) {
-	    this.append(o);
-	}, collection);
-	return collection;
     },
 
     get: function (index) {

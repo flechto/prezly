@@ -33,12 +33,6 @@ describe('Collection', function () {
 	handler = jasmine.createSpy('handler');
     });
 
-    it('can be created from an array', function () {
-	var collection_from_array = collection.fromArray([1, 2, 3]);
-	expect(collection_from_array).not.toBe(collection);
-	expect(collection_from_array.get()).toEqual([1, 2, 3]);
-    });
-
     it('is not empty when it contains objects', function () {
 	collection.append(1);
 	expect(collection.empty()).toBe(false);
