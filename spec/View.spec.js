@@ -1,16 +1,35 @@
 var prezly = require('../prezly');
 
+
 describe('prezly.view', function () {
-    it('creates an object with the provided methods', function () {
-	var view = prezly.view('method1 method2');
-	expect(view.method1).toBe(prezly.noop);
-	expect(view.method2).toBe(prezly.noop);
-    });
-    it('creates an object that extends EventEmitter', function () {
-	var view = prezly.view('method1 method2');
-	Object.keys(prezly.EventEmitter).forEach(function (key) {
-	    expect(view[key]).toBe(prezly.EventEmitter[key]);
+
+    beforeEach(function () {
+	this.addMatchers({
+	    toContainEach: function (a) {
+		if (typeof this.actual.indexOf !== 'function') {
+		    this.message = function () {
+			return 'Expected actual to be an array but was ' + this.actual;
+		    }
+		    return false
+		}
+		for (var i = 0; i < a.length; ++i) {
+		    if (this.actual.indexOf(a[i]) < 0) {
+			this.message = function () {
+			    return 'Expected ' + this.actual + ' to contain all items in ' + a;
+			};
+			return false;
+		    }
+		}
+		return true;
+	    }
 	});
     });
+
+    it('creates an interface extending both fView and fEventEmitter', function () {
+	var view = prezly.view('hello');
+	expect(view.keys()).toContainEach(prezly.fEventEmitter.keys());
+	expect(view.keys()).toContain('hello');
+    });
+
 });
 
