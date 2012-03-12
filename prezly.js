@@ -5,10 +5,44 @@ var make_array = prezly.makeArray = function (obj) {
     return Array.prototype.slice.call(obj, 0);
 };
 
+var noop = prezly.noop = function () {};
+
 var curry = prezly.curry = function (fn) {
     var args = make_array(arguments).slice(1);
     return function () {
 	return fn.apply(this, args.concat(make_array(arguments)));
+    }
+};
+
+var push_stack = function (dest, src) {
+    return src.reduce(function (d, s) {
+	d.push(s);
+	return d;
+    }, dest);
+};
+
+var face = prezly.face = function () {
+    var signature = make_array(arguments);
+    return {
+	extend: function () {
+	    return face.apply(prezly, signature.concat(make_array(arguments)));
+	},
+	implement: function (implementation) {
+	    implementation = implementation || {};
+	    return signature.reduce(function (impl, method) {
+		impl[method] = (typeof implementation[method] === 'function') ? implementation[method] : noop;
+		return impl;
+	    }, {});
+	},
+	is_implemented_by: function (o) {
+	    var keys = Object.keys(o);
+	    return signature.every(function (method) {
+		return keys.indexOf(method) > -1;
+	    });
+	},
+	keys: function () {
+	    return push_stack([], signature);
+	}
     }
 };
 
@@ -97,7 +131,6 @@ var Creatable = prezly.Creatable = {
 
 */
 
-prezly.noop = function () {};
 
 var EventEmitter = prezly.EventEmitter = {
 
