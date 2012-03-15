@@ -131,8 +131,9 @@ var Creatable = prezly.Creatable = {
 
 */
 
+var EventEmitterFace = prezly.EventEmitterFace = face('on', 'emit');
 
-var EventEmitter = prezly.EventEmitter = {
+var EventEmitter = prezly.EventEmitter = EventEmitterFace.implement({
 
     on: function (event, handler) {
 	var events = this._events || (this._events = {});
@@ -149,7 +150,7 @@ var EventEmitter = prezly.EventEmitter = {
 	}, this);
     }
 
-};
+});
 
 
 var Model = prezly.Model = {
@@ -308,12 +309,8 @@ prezly.collection.fromArray = function (a) {
 };
 
 
-prezly.view = function (methods) {
-    var view = Object.create(EventEmitter);
-    methods.split(' ').forEach(function (method) {
-	view[method] = prezly.noop;
-    });
-    return view;
+prezly.view = function () {
+    return EventEmitterFace.extend.apply(EventEmitterFace, make_array(arguments));
 };
 
 prezly.Prezenter = {

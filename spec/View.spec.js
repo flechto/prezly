@@ -25,9 +25,9 @@ describe('prezly.view', function () {
 	});
     });
 
-    it('creates an interface extending both fView and fEventEmitter', function () {
+    it('creates an face extending  fEventEmitter', function () {
 	var view = prezly.view('hello');
-	expect(view.keys()).toContainEach(prezly.fEventEmitter.keys());
+	expect(view.keys()).toContainEach(prezly.EventEmitterFace.keys());
 	expect(view.keys()).toContain('hello');
     });
 
