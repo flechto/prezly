@@ -1,22 +1,22 @@
 var prezly = require('../prezly');
 
 
-describe('Widget', function () {
+describe('widgets', function () {
     
     var view;
     var prezenter = function (v) {
 	v.name('Elvis Presley');
     };
+    var name_implementation;
 
     beforeEach(function () {
 	view = prezly.view('name');
+	name_implementation = jasmine.createSpy('name_implementation');
     });
 
     describe('creation', function () {
 	
 	it('can implement view in the constuctor', function () {
-
-	    var name_implementation = jasmine.createSpy('name_implementation');
 
 	    var widget = prezly.widget(view, function (instance) {
 		instance.name = name_implementation;
@@ -29,21 +29,21 @@ describe('Widget', function () {
 
 	});
 
-    });
+	it('uses the provided implementation', function () {
 
-    xit('is subable', function () {
-	var widget = prezly.Widget.sub({
-	    subbed: true
+	    var not_presented = function () {};
+	    var widget = prezly.widget(view, {
+		name: name_implementation,
+		not_presented:  not_presented
+	    }, prezenter);
+
+	    var instance = widget();
+
+	    expect(name_implementation).toHaveBeenCalledWith('Elvis Presley');
+	    expect(name_implementation.mostRecentCall.object).toBe(instance);
+	    expect(instance.not_presented).toBe(not_presented);
 	});
-	expect(widget.subbed).toBe(true);
-    });
 
-    xit('emits events', function () {
-	var handler = jasmine.createSpy('handler');
-	var widget = Object.create(prezly.Widget);
-	widget.on('event', handler);
-	widget.emit('event');
-	expect(handler).toHaveBeenCalled();
     });
 
 });

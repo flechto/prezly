@@ -354,9 +354,14 @@ prezly.extend(Widget,
 
 prezly.widget = function (view, init, prezenter) {
     
+    var base;
+    if (typeof init === 'object') {
+	base = init;
+	init = base.init || prezly.noop;
+    }
     var ctor = function () {
     };
-    ctor.prototype = Widget;
+    ctor.prototype = base || Widget;
     var creator = function () {
 	var instance = new ctor();
 	init.apply(instance, make_array(arguments).concat([instance]));
