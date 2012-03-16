@@ -20,11 +20,9 @@ describe('Widget', function () {
 
 	    var widget = prezly.widget(view, function (instance) {
 		instance.name = name_implementation;
-	    });
+	    }, prezenter);
 	    
 	    var instance = widget();
-
-	    prezenter(instance);
 
 	    expect(name_implementation).toHaveBeenCalledWith('Elvis Presley');
 	    expect(name_implementation.mostRecentCall.object).toBe(instance);
