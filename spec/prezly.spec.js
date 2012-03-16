@@ -1,6 +1,75 @@
 
 var prezly = require('../prezly');
 
+describe('Basic Usage', function () {
+
+    it('implements the model/view/presenter pattern', function () {
+	
+	// create a model with the attributes 'name' and 'age'
+	var PersonModel = prezly.model('name age');
+
+	// create an interface for the view to display the name and age of a person
+	var PersonView = prezly.view('name', 'age');
+
+	// create a prezenter to update the view when the model changes
+	var prezentPerson = function (view) {
+	    
+	    // get or create an instance of the person model
+	    var person = Object.create(PersonModel);
+
+	    // handle the change event to update the view
+	    person.on('change', function (attribute, new_value, old_value) {
+		switch (attribute) {
+		case 'name':
+		    view.name(new_value);
+		    break;
+		case 'age':
+		    view.age(new_value);
+		    break;
+		};
+	    });
+
+	    // update the models attributes - this should make the model emit the change event
+	    person.name('Elvis Presley');
+	    person.age(42);
+	}
+
+	// create an empty implementation of the view
+	var personViewInstance = PersonView.implement({});
+
+	// spy on the view
+	spyOn(personViewInstance, 'name');
+	spyOn(personViewInstance, 'age');
+
+	// present the view
+	prezentPerson(personViewInstance);
+
+	// test the prezenter output
+	expect(personViewInstance.name).toHaveBeenCalledWith('Elvis Presley');
+	expect(personViewInstance.age).toHaveBeenCalledWith(42);
+
+
+/*
+	var personWidget = prezly.widget(PersonView, prezentPerson, function (element, widget) {
+	    widget.name = function (name) {
+		//$('.name', element).text(name);
+	    };
+	    wiget.age = function (age) {
+		//$('.age', element).text(age)
+	    };
+	});
+
+	spyOn(personWidget.view, 'age');
+	spyOn(personWidget.view, 'name');
+	var pw = personWidget('#TheKing');
+	expect(pw.name).toHaveBeenCalledWith('Elvis Presley');
+	expect(pw.age).toHaveBeenCalledWith(42);
+
+*/
+    });
+
+});
+
 describe('prezly.extend', function () {
 
     it('extends the first object with the second', function () {
