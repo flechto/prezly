@@ -64,4 +64,27 @@ describe('Faces', function () {
 
     });
 
+    describe('implementation extraction', function () {
+
+	it('extracts an its implementation from an object', function () {
+
+	    var meth1 = jasmine.createSpy('obj.meth1');
+	    var obj = {
+		meth1: meth1,
+		non_implementation: jasmine.createSpy('non_implementation')
+	    };
+	    
+	    var implementation = face.extract_implementation(obj);
+
+	    expect(face.is_implemented_by(implementation)).toBe(true);
+	    expect(typeof implementation.non_implementation).toBe('undefined');
+	    expect(implementation.meth2).toBe(prezly.noop);
+	    
+	    implementation.meth1(true);
+	    expect(meth1).toHaveBeenCalledWith(true);
+	    expect(meth1.mostRecentCall.object).toBe(obj);
+
+	});
+
+    });
 });

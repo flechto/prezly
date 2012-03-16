@@ -27,6 +27,19 @@ var face = prezly.face = function () {
 	extend: function () {
 	    return face.apply(prezly, signature.concat(make_array(arguments)));
 	},
+	extract_implementation: function (obj) {
+	    return signature.reduce(function (impl, method) {
+		if (typeof obj[method] === 'function') {
+		    impl[method] = function () {
+			obj[method].apply(obj, make_array(arguments));
+		    };
+		}
+		else {
+		    impl[method] = prezly.noop;
+		}
+		return impl;
+	    }, {});
+	},
 	implement: function (implementation) {
 	    implementation = implementation || {};
 	    return signature.reduce(function (impl, method) {
@@ -67,7 +80,7 @@ prezly.extend = function (dest, src) {
     return dest;
 };
 
-prezly.Extendable = {
+var Extendable = prezly.Extendable = {
 
     extend: function () {
 	var args = Array.prototype.slice.call(arguments, 0);
@@ -336,5 +349,22 @@ var Widget = prezly.Widget = {
 };
 
 prezly.extend(Widget,
-	      Subable,
+	      Extendable,
 	      EventEmitter);
+
+prezly.widget = function (view, init, prezenter) {
+    
+    var ctor = function () {
+    };
+    ctor.prototype = Widget;
+    var creator = function () {
+	var instance = new ctor();
+	init.apply(instance, make_array(arguments).concat([instance]));
+	if (typeof prezenter === 'function') {
+	    prezenter(view.extract_implementation(instance));
+	}
+	return instance
+    };
+
+    return creator
+};
