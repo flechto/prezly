@@ -48,24 +48,20 @@ describe('Basic Usage', function () {
 	expect(personViewInstance.name).toHaveBeenCalledWith('Elvis Presley');
 	expect(personViewInstance.age).toHaveBeenCalledWith(42);
 
+	var person_name = jasmine.createSpy('person_name');
+	var person_age = jasmine.createSpy('person_age');
+	// implement a widget
+	var personWidget = prezly.widget(PersonView, function (element, widget) {
+	    widget.name = person_name
+	    wiget.age = person_age
+	}, prezentPerson);
 
-/*
-	var personWidget = prezly.widget(PersonView, prezentPerson, function (element, widget) {
-	    widget.name = function (name) {
-		//$('.name', element).text(name);
-	    };
-	    wiget.age = function (age) {
-		//$('.age', element).text(age)
-	    };
-	});
-
-	spyOn(personWidget.view, 'age');
-	spyOn(personWidget.view, 'name');
 	var pw = personWidget('#TheKing');
+	expect(pw.name).toBe(person_name);
 	expect(pw.name).toHaveBeenCalledWith('Elvis Presley');
+	expect(pw.age).toBe(person_name);
 	expect(pw.age).toHaveBeenCalledWith(42);
 
-*/
     });
 
 });
