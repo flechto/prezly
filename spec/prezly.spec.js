@@ -53,13 +53,13 @@ describe('Basic Usage', function () {
 	// implement a widget
 	var personWidget = prezly.widget(PersonView, function (element, widget) {
 	    widget.name = person_name
-	    wiget.age = person_age
+	    widget.age = person_age
 	}, prezentPerson);
 
 	var pw = personWidget('#TheKing');
 	expect(pw.name).toBe(person_name);
 	expect(pw.name).toHaveBeenCalledWith('Elvis Presley');
-	expect(pw.age).toBe(person_name);
+	expect(pw.age).toBe(person_age);
 	expect(pw.age).toHaveBeenCalledWith(42);
 
     });
