@@ -1,5 +1,12 @@
 
-prezly = exports;
+var prezly;
+if (typeof exports !== 'undefined') {
+    prezly = exports || (window.prezly = {});
+}
+else {
+    prezly = window.prezly = {};
+}
+
 
 var make_array = prezly.makeArray = function (obj) {
     return Array.prototype.slice.call(obj, 0);
@@ -355,16 +362,22 @@ prezly.extend(Widget,
 prezly.widget = function (view, init, prezenter) {
     
     var base;
+
     if (typeof init === 'object') {
 	base = init;
 	init = base.init || prezly.noop;
     }
-    var ctor = function () {
-    };
+
+    var ctor = function () { };
+
     ctor.prototype = base || Widget;
+
     var creator = function () {
+
 	var instance = new ctor();
+
 	init.apply(instance, make_array(arguments).concat([instance]));
+
 	if (typeof prezenter === 'function') {
 	    prezenter(view.extract_implementation(instance));
 	}
