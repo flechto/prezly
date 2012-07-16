@@ -49,4 +49,14 @@ describe('EventEmitter', function () {
 	expect(handler_1.mostRecentCall.object).toBe(event_emitter);
     });
 
+    it('triggers an all event after any event', function () {
+
+	event_emitter.on('all', handler_1);
+
+	event_emitter.emit('event', 1, 3);
+
+	expect(handler_1).toHaveBeenCalledWith('event', 1, 3);
+
+    });
+
 });

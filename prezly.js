@@ -168,6 +168,13 @@ var EventEmitter = prezly.EventEmitter = EventEmitterFace.implement({
 	handlers.forEach(function (handler) {
 	    handler.apply(this, args);
 	}, this);
+
+	handlers = events['all'] || (events['all'] = []);
+	
+	args.unshift(event);
+	handlers.forEach(function (handler) {
+	    handler.apply(this, args);
+	});
     }
 
 });
