@@ -189,6 +189,7 @@ var Model = prezly.Model = {
 	var attributes = this._attributes || (this._attributes = {});
 	var old = attributes[attr];
 	attributes[attr] = value;
+	this.emit('change:' + attr, value, old);
 	this.emit('change', attr, value, old);
     }
 

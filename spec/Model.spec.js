@@ -65,4 +65,14 @@ describe('Model', function () {
 	expect(change_handler).toHaveBeenCalledWith('attr_1', 1, true);
     });
 
+    it('emits a change:attribute event when an attribute changes', function () {
+
+	model.on('change:attr1', change_handler);
+
+	model.set('attr1', true);
+
+	expect(change_handler).toHaveBeenCalledWith(true, undefined);
+
+    });
+
 });
